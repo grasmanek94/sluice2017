@@ -58,8 +58,8 @@ int main(int argc, char *argv[])
 	int sock = CreateTCPClientSocket("127.0.0.1", port);
 	if (sock == -1)
 	{
-		std::cout << "Cannot establish connection to port: " << port << std::endl;
-		exit(EXIT_FAILURE);
+		//std::cout << "Cannot establish connection to port: " << port << std::endl;
+		//exit(EXIT_FAILURE);
 	}
 
 	int sluice_number = port - 5554;
@@ -98,42 +98,44 @@ int main(int argc, char *argv[])
 		mvprintw(8, 1,  "CONNECTION:    OK");
 		mvprintw(9, 1,  "SLUICE NUMBER: %d", sluice_number);
 		mvprintw(10, 1, "PORT:          %d", port);
-		mvprintw(11, 1, "SLUICE STATUS: NONE");
+		mvprintw(12, 1, "SLUICE STATUS: NONE");
 
-		mvprintw(0, 32,		"+--- S L U I C E     S T A T U S ---+");
-		for (int i = 1; i <= 28; ++i)
+		mvprintw(0, 32,		"+ PROPERTY ----------------- LastKnownValue +");
+		for (int i = 1; i <= 29; ++i)
 		{
-			mvprintw(i, 32, "|                                   |");
+			mvprintw(i, 32, "|                                           |");
 		}
-		mvprintw(29, 32,	"+-----------------------------------+");
+		mvprintw(30, 32,	"+-------------------------------------------+");
 
-		mvprintw(1, 33,		 " DOORS");
-		mvprintw(2, 33,		 "     |");
-		mvprintw(3, 33,		 "     +----LEFT : doorLocked");
+		mvprintw(1, 33,		 " WATER LEVEL                  low");
+		mvprintw(2, 33,		 " DOORS");
+		mvprintw(3, 33,		 "     +----LEFT                doorLocked");
 		mvprintw(4, 33,		 "     |    |");
 		mvprintw(5, 33,		 "     |    +----VALVES");
-		mvprintw(6, 33,		 "     |    |    |");
-		mvprintw(7, 33,		 "     |    |    +----HIGH: closed");
-		mvprintw(8, 33,		 "     |    |    +----MID : closed");
-		mvprintw(9, 33,		 "     |    |    +----LOW : closed");
-		mvprintw(10, 33,	 "     |    |");
-		mvprintw(11, 33,	 "     |    +----TRAFFIC LIGHTS");
-		mvprintw(12, 33,	 "     |         |");
-		mvprintw(13, 33,	 "     |         +----LEFT : off");
-		mvprintw(14, 33,	 "     |         +----RIGHT: off");
-		mvprintw(15, 33,	 "     |");
-		mvprintw(16, 33,	 "     +----RIGHT: doorLocked");
-		mvprintw(17, 33,	 "          |");
-		mvprintw(18, 33,	 "          +----VALVES");
-		mvprintw(19, 33,	 "          |    |");
-		mvprintw(20, 33,	 "          |    +----HIGH: closed");
-		mvprintw(21, 33,	 "          |    +----MID : closed");
-		mvprintw(23, 33,	 "          |    +----LOW : closed");
-		mvprintw(24, 33,	 "          |");
-		mvprintw(25, 33,	 "          +----TRAFFIC LIGHTS");
-		mvprintw(26, 33,	 "               |");
-		mvprintw(27, 33,	 "               +----LEFT : off");
-		mvprintw(28, 33,	 "               +----RIGHT: off");
+		mvprintw(6, 33,		 "     |    |    +----HIGH      closed");
+		mvprintw(7, 33,		 "     |    |    +----MID       closed");
+		mvprintw(8, 33,		 "     |    |    +----LOW       closed");
+		mvprintw(9, 33,		 "     |    |");
+		mvprintw(10, 33,	 "     |    +----TRAFFIC LIGHTS");
+		mvprintw(11, 33,	 "     |    |    |");
+		mvprintw(12, 33,	 "     |    |    +----LEFT      off");
+		mvprintw(13, 33,	 "     |    |    +----RIGHT     off");
+		mvprintw(14, 33,	 "     |    |");
+		mvprintw(15, 33,	 "     |    +----LOCK STATE     lockWorking");
+		mvprintw(16, 33,	 "     |");
+		mvprintw(17, 33,	 "     +----RIGHT               doorLocked");
+		mvprintw(18, 33,	 "          |");
+		mvprintw(19, 33,	 "          +----VALVES");
+		mvprintw(20, 33,	 "          |    +----HIGH      closed");
+		mvprintw(21, 33,	 "          |    +----MID       closed");
+		mvprintw(22, 33,	 "          |    +----LOW       closed");
+		mvprintw(23, 33,	 "          |");
+		mvprintw(24, 33,	 "          +----TRAFFIC LIGHTS");
+		mvprintw(25, 33,	 "          |    |");
+		mvprintw(26, 33,	 "          |    +----LEFT      off");
+		mvprintw(27, 33,	 "          |    +----RIGHT     off");
+		mvprintw(28, 33,	 "          |");
+		mvprintw(29, 33,	 "          +----LOCK STATE     lockWorking");
 
 
 		switch (getch())
