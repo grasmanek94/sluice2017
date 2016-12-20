@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="product">
+      <UniqueIdentifier>{a50daf9e-4dd7-48b3-9d28-d355842d6039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{6ea13de2-72a5-4f98-abd9-ea7af4ba992e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="test\RentalAdministrationTest.cpp" />
+    <ClCompile Include="test\SedanTest.cpp" />
+    <ClCompile Include="product\main.cpp" />
+  </ItemGroup>
+</Project>
