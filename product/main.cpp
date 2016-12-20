@@ -1,7 +1,37 @@
 #include <iostream>
 #include <ctime>
+#include <string>
 #include <ncurses.h>
 #include <thread>
+#include <memory.h>     // for memset()
+#include <arpa/inet.h>  /* for sockaddr_in and inet_ntoa() */
+
+int CreateTCPClientSocket(const char * servIP, unsigned short port)
+{
+	int                 sock;         /* Socket descriptor */
+	struct sockaddr_in  ServAddr;     /* server address */
+
+									  /* Create a reliable, stream socket using TCP */
+	if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+	{
+		return 0;
+	}
+
+	/* Construct the server address structure */
+	memset(&ServAddr, 0, sizeof(ServAddr));     /* Zero out structure */
+	ServAddr.sin_family = AF_INET;             /* Internet address family */
+	ServAddr.sin_addr.s_addr = inet_addr(servIP);   /* Server IP address */
+	ServAddr.sin_port = htons(port);         /* Server port */
+
+												 /* Establish the connection to the echo server */
+	if (connect(sock, (struct sockaddr *) &ServAddr, sizeof(ServAddr)) < 0)
+	{
+		return 0;
+	}
+
+	return (sock);
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -11,6 +41,22 @@ int main(int argc, char *argv[])
 		std::cout << "Example: " << argv[0] << " 5555" << std::endl;
 		exit(EXIT_FAILURE);
 	}
+
+	int port = std::atol(argv[1]);
+	if (port < 5555 || port > 5558)
+	{
+		std::cout << "Invalid port supplied (must be in range [5555, 5558]): " << port << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	int sock = CreateTCPClientSocket("127.0.0.1", port);
+	if (sock == 0)
+	{
+		std::cout << "Cannot establish connection to port: " << port << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	int sluice_number = port - 5554;
 
 	WINDOW* mainwin = initscr();
 
@@ -44,8 +90,8 @@ int main(int argc, char *argv[])
 		mvprintw(6, 1, "M - AFSLUITEN");
 		
 		mvprintw(8, 1,  "CONNECTION:    OK");
-		mvprintw(9, 1,  "SLUICE NUMBER: 1");
-		mvprintw(10, 1, "PORT:          5555");
+		mvprintw(9, 1,  "SLUICE NUMBER: %d", sluice_number);
+		mvprintw(10, 1, "PORT:          %d", port);
 		mvprintw(11, 1, "SLUICE STATUS: NONE");
 
 		mvprintw(0, 32,		"+--- S L U I C E     S T A T U S ---+");
