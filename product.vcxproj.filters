@@ -6,6 +6,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="product\main.cpp" />
+    <ClCompile Include="product\main.cpp">
+      <Filter>product</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
