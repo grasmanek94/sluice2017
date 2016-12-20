@@ -118,8 +118,8 @@ int main(int argc, char *argv[])
 		mvprintw(9, 33,		 "     |    |");
 		mvprintw(10, 33,	 "     |    +----TRAFFIC LIGHTS");
 		mvprintw(11, 33,	 "     |    |    |");
-		mvprintw(12, 33,	 "     |    |    +----LEFT      off");
-		mvprintw(13, 33,	 "     |    |    +----RIGHT     off");
+		mvprintw(12, 33,	 "     |    |    +----INSIDE    off");
+		mvprintw(13, 33,	 "     |    |    +----OUTSIDE   off");
 		mvprintw(14, 33,	 "     |    |");
 		mvprintw(15, 33,	 "     |    +----LOCK STATE     lockWorking");
 		mvprintw(16, 33,	 "     |");
@@ -132,8 +132,8 @@ int main(int argc, char *argv[])
 		mvprintw(23, 33,	 "          |");
 		mvprintw(24, 33,	 "          +----TRAFFIC LIGHTS");
 		mvprintw(25, 33,	 "          |    |");
-		mvprintw(26, 33,	 "          |    +----LEFT      off");
-		mvprintw(27, 33,	 "          |    +----RIGHT     off");
+		mvprintw(26, 33,	 "          |    +----INSIDE    off");
+		mvprintw(27, 33,	 "          |    +----OUTSIDE   off");
 		mvprintw(28, 33,	 "          |");
 		mvprintw(29, 33,	 "          +----LOCK STATE     lockWorking");
 
