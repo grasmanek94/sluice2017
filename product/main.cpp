@@ -8,49 +8,55 @@
 
 int CreateTCPClientSocket(const char * servIP, unsigned short port)
 {
-	int                 sock;         /* Socket descriptor */
-	struct sockaddr_in  ServAddr;     /* server address */
+	int                 sock;
+	struct sockaddr_in  ServAddr;
 
-									  /* Create a reliable, stream socket using TCP */
 	if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
 	{
-		return 0;
+		return -1;
 	}
 
-	/* Construct the server address structure */
-	memset(&ServAddr, 0, sizeof(ServAddr));     /* Zero out structure */
-	ServAddr.sin_family = AF_INET;             /* Internet address family */
-	ServAddr.sin_addr.s_addr = inet_addr(servIP);   /* Server IP address */
-	ServAddr.sin_port = htons(port);         /* Server port */
+	memset(&ServAddr, 0, sizeof(ServAddr));
+	ServAddr.sin_family = AF_INET;
+	ServAddr.sin_addr.s_addr = inet_addr(servIP);
+	ServAddr.sin_port = htons(port);
 
-												 /* Establish the connection to the echo server */
 	if (connect(sock, (struct sockaddr *) &ServAddr, sizeof(ServAddr)) < 0)
 	{
-		return 0;
+		return -1;
 	}
 
 	return (sock);
 }
 
+void x()
+{
+	/*send(sock, echoString, echoStringLen, 0);
+	bytesRcvd = recv(sock, echoBuffer, RCVBUFSIZE - 1, 0);
+	if (bytesRcvd > 0)
+	{
+		echoBuffer[bytesRcvd < RCVBUFSIZE - 1 ? bytesRcvd : RCVBUFSIZE - 1] = 0;
+		printf("%s\n", echoBuffer);
+	}
+	else
+	{
+
+	}*/
+}
 
 int main(int argc, char *argv[])
 {
+	int port = argc >= 2 ? std::atol(argv[1]) : 0;
 	if (argc < 2)
 	{
-		std::cout << "Invoking this program requires you to supply a port number in the command line!" << std::endl;
+		std::cout << "Invoking this program requires you to supply a valid port number in the command line!" << std::endl;
+		std::cout << "Supplied port must be in range [5555, 5558], supplied port: " << port << std::endl;
 		std::cout << "Example: " << argv[0] << " 5555" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
-	int port = std::atol(argv[1]);
-	if (port < 5555 || port > 5558)
-	{
-		std::cout << "Invalid port supplied (must be in range [5555, 5558]): " << port << std::endl;
-		exit(EXIT_FAILURE);
-	}
-
 	int sock = CreateTCPClientSocket("127.0.0.1", port);
-	if (sock == 0)
+	if (sock == -1)
 	{
 		std::cout << "Cannot establish connection to port: " << port << std::endl;
 		exit(EXIT_FAILURE);
