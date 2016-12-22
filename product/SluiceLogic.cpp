@@ -109,7 +109,7 @@ bool SluiceLogic::VrijgevenUitvaren()
 // beweging onmiddellijk gestopt.
 bool SluiceLogic::Alarm()
 {
-	if (state_current != SluiceLogicStateAlarm)
+	if (state_current == SluiceLogicStateAlarm)
 	{
 		return false;
 	}
