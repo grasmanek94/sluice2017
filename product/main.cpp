@@ -5,7 +5,7 @@
 #include <thread>
 #include "SluiceLogic.hpp"
 
-int main(int argc, char *argv[])
+int test_main(int argc, char *argv[])
 {
 	int port = argc >= 2 ? std::atol(argv[1]) : 0;
 	if (argc < 2)
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-int old_main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	int port = argc >= 2 ? std::atol(argv[1]) : 0;
 	if (argc < 2)
@@ -57,8 +57,9 @@ int old_main(int argc, char *argv[])
 	bool running = true;
 	while (running)
 	{
-		/*  Delete the old response line, and print a new one  */
+		sluice.Update();
 
+		/*  Delete the old response line, and print a new one  */
 		deleteln();
 
 		time_t t = time(0);   // get time now
