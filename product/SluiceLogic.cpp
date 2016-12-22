@@ -190,7 +190,7 @@ void SluiceLogic::UpdateSchutten()
 					state_schutten == SluiceLogicStateSchuttenInternalLowerClosing ? 
 					SluiceLogicStateSchuttenInternalLower : SluiceLogicStateSchuttenInternalHigher;
 			}
-			else if (door_state != DoorStateClosing)
+			else if (door_state != DoorStateClosing && door_state)
 			{
 				// Resume from alarm
 				schutten_to_close->Close();

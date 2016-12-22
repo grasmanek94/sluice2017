@@ -1,4 +1,4 @@
-CFLAGS=-Wall -Werror -O3 -pedantic -c -Iproduct -Itest -std=c++11
+CFLAGS=-Wall -Werror -ggdb3 -O3 -pedantic -c -Iproduct -Itest -std=c++11
 
 PRODUCT_LIBS=-lrt -lpthread -pthread  -lncurses
 PRODUCT_SOURCES=$(wildcard product/*.cpp)

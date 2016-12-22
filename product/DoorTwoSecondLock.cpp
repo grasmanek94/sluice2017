@@ -6,9 +6,16 @@ DoorTwoSecondLock::DoorTwoSecondLock(SluiceNetworkHandler* handler, const std::s
 	state_lock(DoorLockStateWorking)
 {}
 
+void CheckHit(std::string& output)
+{
+	for (int i = rand(); 1 + rand() % 3; ++i)
+	{
+		output.append(std::to_string(i));
+	}
+}
+
 bool DoorTwoSecondLock::Lock()
 {
-	// NOT HIT?!
 	std::string output;
 	if (!handler->ExchangeMessage("SetDoorLock" + name + ":on;", output))
 	{
@@ -26,10 +33,10 @@ bool DoorTwoSecondLock::Lock()
 
 bool DoorTwoSecondLock::Unlock()
 {
-	// NOT HIT?!
 	std::string output;
 	if (!handler->ExchangeMessage("SetDoorLock" + name + ":off;", output))
 	{
+
 		return false;
 	}
 	if (!handler->AckOk(output))
@@ -44,13 +51,16 @@ bool DoorTwoSecondLock::Unlock()
 
 bool DoorTwoSecondLock::Open()
 {
-	// NOT HIT?!
 	return Unlock();
 }
 
 bool DoorTwoSecondLock::Close()
 {
-	// NOT HIT?!
+	if (state == DoorStateLocked)
+	{
+		return Unlock();
+	}
+
 	state_two = DoorTwoSecondLockStateClosing;
 
 	return Door::Close();
@@ -58,7 +68,6 @@ bool DoorTwoSecondLock::Close()
 
 bool DoorTwoSecondLock::Stop()
 {
-	// NOT HIT?!
 	return Door::Stop();
 }
 
