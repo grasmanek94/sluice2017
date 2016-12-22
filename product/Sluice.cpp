@@ -75,7 +75,7 @@ Door* Sluice::DoorHigh()
 
 void Sluice::Update()
 {
-	if (water_level_timer.ElapsedMilliseconds() >= 50)
+	if (water_level_timer.ElapsedMilliseconds() >= 150)
 	{
 		water_level_timer.Restart();
 		UpdateWaterLevel();

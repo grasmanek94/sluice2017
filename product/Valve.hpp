@@ -5,9 +5,9 @@
 
 enum ValvePosition
 {
-	ValvePositionHigh = 1,
+	ValvePositionLow = 1,
 	ValvePositionMid,
-	ValvePositionLow
+	ValvePositionHigh
 };
 
 enum ValveState
