@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
+#include <map>
 #include "SluiceNetworkHandler.hpp"
 #include "TrafficLight.hpp"
 #include "Valve.hpp"
-#include "DoorEngine.hpp"
-#include "DoorLock.hpp"
+#include "Timer.hpp"
 
 enum DoorState
 {
@@ -14,7 +14,8 @@ enum DoorState
 	DoorStateClosing,
 	DoorStateOpening,
 	DoorStateStopped,
-	DoorStateMotorDamage
+	DoorStateMotorDamage,
+	DoorStateUnknown
 };
 
 class Door
@@ -23,14 +24,9 @@ protected:
 	SluiceNetworkHandler* handler;
 	std::string name;
 	DoorState state;
-private:
-	DoorEngine* engine;
-	DoorLock* lock;
+	Timer state_update;
 public:
 	Door(SluiceNetworkHandler* handler, const std::string& door_name);
-	Door(SluiceNetworkHandler* handler, const std::string& door_name, DoorEngine* engine);
-	Door(SluiceNetworkHandler* handler, const std::string& door_name, DoorLock* lock);
-	Door(SluiceNetworkHandler* handler, const std::string& door_name, DoorEngine* engine, DoorLock* lock);
 	virtual ~Door();
 	TrafficLight TrafficLightInside;
 	TrafficLight TrafficLightOutside;
@@ -42,4 +38,33 @@ public:
 	virtual bool Stop();
 	virtual void Update();
 	DoorState GetState();
+	DoorState UpdateState();
+};
+
+template <typename T = int>
+class DoorStateMapper
+{
+public:
+	static DoorState Map(const std::string& input)
+	{
+		static bool initialised = false;
+		static std::map<std::string, DoorState> mapper;
+		if (!initialised)
+		{
+			mapper["doorLocked;"] = DoorStateLocked;
+			mapper["doorClosed;"] = DoorStateClosed;
+			mapper["doorOpen;"] = DoorStateOpen;
+			mapper["doorClosing;"] = DoorStateClosing;
+			mapper["doorOpening;"] = DoorStateOpening;
+			mapper["doorStopped;"] = DoorStateStopped;
+			mapper["motorDamage;"] = DoorStateMotorDamage;
+		}
+
+		std::map<std::string, DoorState>::iterator found = mapper.find(input);
+		if (found == mapper.end())
+		{
+			return DoorStateUnknown;
+		}
+		return found->second;
+	}
 };

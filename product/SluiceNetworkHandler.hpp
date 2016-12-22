@@ -12,4 +12,5 @@ private:
 public:
 	SluiceNetworkHandler(int sluis_nummer);
 	bool ExchangeMessage(const std::string& input, std::string& output);
+	bool AckOk(const std::string& input);
 };

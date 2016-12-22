@@ -54,3 +54,8 @@ bool SluiceNetworkHandler::ExchangeMessage(const std::string& input, std::string
 
 	return true;
 }
+
+bool SluiceNetworkHandler::AckOk(const std::string& input)
+{
+	return input == "ack;";
+}

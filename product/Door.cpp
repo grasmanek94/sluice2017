@@ -1,18 +1,6 @@
 #include "Door.hpp"
 
-Door::Door(SluiceNetworkHandler* handler, const std::string& door_name)
-	: Door(handler, door_name, new DoorEngine(handler, door_name), new DoorLock(handler, door_name))
-{}
-
-Door::Door(SluiceNetworkHandler * handler, const std::string & door_name, DoorEngine * engine)
-	: Door(handler, door_name, engine)
-{}
-
-Door::Door(SluiceNetworkHandler * handler, const std::string & door_name, DoorLock * lock)
-	: Door(handler, door_name, lock)
-{}
-
-Door::Door(SluiceNetworkHandler * handler, const std::string & door_name, DoorEngine * engine, DoorLock * lock)
+Door::Door(SluiceNetworkHandler * handler, const std::string & door_name)
 	: handler(handler),
 	name(door_name),
 	state(DoorStateClosed),
@@ -20,51 +8,87 @@ Door::Door(SluiceNetworkHandler * handler, const std::string & door_name, DoorEn
 	TrafficLightOutside(handler, door_name, TrafficLightPositionOuter),
 	ValveLow(handler, door_name, ValvePositionLow),
 	ValveMid(handler, door_name, ValvePositionMid),
-	ValveHigh(handler, door_name, ValvePositionHigh),
-	engine(engine),
-	lock(lock)
+	ValveHigh(handler, door_name, ValvePositionHigh)
 {
-	if (handler == NULL || engine == NULL || lock == NULL)
+	if (handler == NULL)
 	{
-		throw std::invalid_argument("handler, engine or lock == nullptr");
+		throw std::invalid_argument("handler == nullptr");
 	}
 }
 
 Door::~Door()
 {
-	delete engine;
-	engine = NULL;
+}
 
-	delete lock;
-	lock = NULL;
+DoorState Door::UpdateState()
+{
+	std::string output;
+	if (!handler->ExchangeMessage("GetDoor" + name, output))
+	{
+		state = DoorStateUnknown;
+	}
+	else
+	{
+		state = DoorStateMapper<>::Map(output);
+	}
+	return state;
 }
 
 DoorState Door::GetState()
 {
-	if (engine->GetState() == DoorEngineStateDamaged)
-	{
-		state = DoorStateMotorDamage;
-	}
 	return state;
 }
 
 bool Door::Open()
 {
-	return false;
+	std::string output;
+	if (!handler->ExchangeMessage("SetDoor" + name + ":open", output))
+	{
+		return false;
+	}
+	if (!handler->AckOk(output))
+	{
+		return false;
+	}
+	return true;
 }
 
 bool Door::Close()
 {
-	return false;
+	std::string output;
+	if (!handler->ExchangeMessage("SetDoor" + name + ":close", output))
+	{
+		return false;
+	}
+	if (!handler->AckOk(output))
+	{
+		return false;
+	}
+	return true;
 }
 
 bool Door::Stop()
 {
-	return false;
+	std::string output;
+	if (!handler->ExchangeMessage("SetDoor" + name + ":stop", output))
+	{
+		return false;
+	}
+	if (!handler->AckOk(output))
+	{
+		return false;
+	}
+	return true;
 }
 
 void Door::Update()
 {
-	engine->Update();
-	lock->Update();
+	if (state_update.ElapsedMilliseconds() >= 50)
+	{
+		state_update.Restart();
+		UpdateState();
+		ValveLow.UpdateState();
+		ValveMid.UpdateState();
+		ValveHigh.UpdateState();
+	}
 }
