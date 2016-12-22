@@ -1,6 +1,7 @@
 #include "Valve.hpp"
 
-Valve::Valve(SluiceNetworkHandler * handler, const std::string & door_name, ValvePosition position)
+Valve::Valve(SluiceNetworkHandler* handler, const std::string& door_name, ValvePosition position)
+	: handler(handler), door_name(door_name), position(position)
 {
 }
 

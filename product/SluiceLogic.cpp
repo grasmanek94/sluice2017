@@ -3,11 +3,13 @@
 SluiceLogic::SluiceLogic(int sluice_nummer)
 	: sluice_nummer(sluice_nummer),
 	handler(new SluiceNetworkHandler(sluice_nummer)),
-	sluice(new Sluice(handler, sluice_nummer)),
+	sluice(NULL),
 	state_current(SluiceLogicStateIdle),
 	state_before_alarm(SluiceLogicStateIdle),
 	state_schutten(SluiceLogicStateSchuttenInternalIdle)
-{ }
+{ 
+	sluice = new Sluice(handler, sluice_nummer);
+}
 
 SluiceLogic::~SluiceLogic()
 {
