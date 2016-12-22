@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 		time_t t = time(0);   // get time now
 		struct tm * now = localtime(&t);
 
-		mvprintw(0, 1, "%d-%d-%d %d:%d:%d", 1900 + now->tm_year, 1 + now->tm_mon, now->tm_mday, now->tm_hour, now->tm_min, now->tm_sec);
+		mvprintw(0, 1, "%04d-%02d-%02d %02d:%02d:%02d", 1900 + now->tm_year, 1 + now->tm_mon, now->tm_mday, now->tm_hour, now->tm_min, now->tm_sec);
 		mvprintw(2, 1, "A - ALARM");
 		mvprintw(3, 1, "E - SCHUTTEN");
 		mvprintw(4, 1, "Y - VRIJGEVEN INVAREN");
