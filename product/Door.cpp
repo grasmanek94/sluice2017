@@ -90,7 +90,7 @@ void Door::Update()
 		ValveLow.UpdateState();
 		ValveMid.UpdateState();
 		ValveHigh.UpdateState();
-		TrafficLightInside.UpdateState();
-		TrafficLightOutside.UpdateState();
+		//TrafficLightInside.UpdateState();
+		//TrafficLightOutside.UpdateState();
 	}
 }

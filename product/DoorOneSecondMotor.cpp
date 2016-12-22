@@ -25,7 +25,7 @@ void DoorOneSecondMotor::Update()
 {
 	Door::Update();
 
-	if ((state == DoorStateOpening || state == DoorStateClosing) && timer.ElapsedMilliseconds() > 800)
+	if ((state == DoorStateOpening || state == DoorStateClosing) && timer.ElapsedMilliseconds() > 500)
 	{
 		state == DoorStateOpening ?
 			Open() :
