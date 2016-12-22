@@ -12,7 +12,8 @@ public:
 	SluiceLogic(int sluice_nummer);
 	~SluiceLogic();
 	bool Schutten();
-	bool Vrijgeven();
+	bool VrijgevenInvaren();
+	bool VrijgevenUitvaren();
 	bool Alarm();
 	bool Herstel();
 	void Update();

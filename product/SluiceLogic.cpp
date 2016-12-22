@@ -21,7 +21,12 @@ bool SluiceLogic::Schutten()
 	return false;
 }
 
-bool SluiceLogic::Vrijgeven()
+bool SluiceLogic::VrijgevenInvaren()
+{
+	return false;
+}
+
+bool SluiceLogic::VrijgevenUitvaren()
 {
 	return false;
 }

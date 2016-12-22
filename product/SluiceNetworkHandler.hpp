@@ -5,6 +5,8 @@ class SluiceNetworkHandler
 {
 private:
 	int socket_fd;
+	static const size_t buffer_size = 64;
+	char buffer[buffer_size];
 
 	static int CreateTCPClientSocket(const char * servIP, unsigned short port);
 public:

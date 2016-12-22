@@ -55,13 +55,6 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	int sock = CreateTCPClientSocket("127.0.0.1", port);
-	if (sock == -1)
-	{
-		//std::cout << "Cannot establish connection to port: " << port << std::endl;
-		//exit(EXIT_FAILURE);
-	}
-
 	int sluice_number = port - 5554;
 
 	WINDOW* mainwin = initscr();

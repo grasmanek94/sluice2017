@@ -28,10 +28,29 @@ int SluiceNetworkHandler::CreateTCPClientSocket(const char * servIP, unsigned sh
 SluiceNetworkHandler::SluiceNetworkHandler(int sluis_nummer)
 	: socket_fd(CreateTCPClientSocket("127.0.0.1", 5554 + sluis_nummer))
 {
+	if (socket_fd == -1)
+	{
+		throw std::invalid_argument("sluis_nummer");
+	}
 
+	buffer[buffer_size - 1] = 0; // so we always have a null termination
 }
 
 bool SluiceNetworkHandler::ExchangeMessage(const std::string& input, std::string& output)
 {
-	return false;
+	if (send(socket_fd, input.c_str(), input.size(), 0) != input.size())
+	{
+		return false;
+	}
+
+	int bytesRcvd = recv(socket_fd, buffer, buffer_size - 1, 0);
+	if (bytesRcvd < 0)
+	{
+		return false;
+	}
+
+	buffer[bytesRcvd] = 0;
+	output = buffer;
+
+	return true;
 }

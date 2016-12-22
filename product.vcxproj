@@ -29,6 +29,7 @@
     <ClCompile Include="product\Sluice.cpp" />
     <ClCompile Include="product\SluiceLogic.cpp" />
     <ClCompile Include="product\SluiceNetworkHandler.cpp" />
+    <ClCompile Include="product\Timer.cpp" />
     <ClCompile Include="product\TrafficLight.cpp" />
     <ClCompile Include="product\DoorTwoSecondLock.cpp" />
     <ClCompile Include="product\Valve.cpp" />
@@ -43,9 +44,13 @@
     <ClInclude Include="product\Sluice.hpp" />
     <ClInclude Include="product\SluiceLogic.hpp" />
     <ClInclude Include="product\SluiceNetworkHandler.hpp" />
+    <ClInclude Include="product\Timer.hpp" />
     <ClInclude Include="product\TrafficLight.hpp" />
     <ClInclude Include="product\DoorTwoSecondLock.hpp" />
     <ClInclude Include="product\Valve.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A9E53C6C-6AEE-4CB8-B677-4369976BCF16}</ProjectGuid>
