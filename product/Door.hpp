@@ -37,7 +37,7 @@ public:
 	virtual bool Close();
 	virtual bool Stop();
 	virtual void Update();
-	DoorState GetState();
+	virtual DoorState GetState();
 	DoorState UpdateState();
 };
 
