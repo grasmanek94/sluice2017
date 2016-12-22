@@ -58,7 +58,7 @@ bool DoorTwoSecondLock::Close()
 {
 	if (state == DoorStateLocked)
 	{
-		return Unlock();
+		return false;
 	}
 
 	state_two = DoorTwoSecondLockStateClosing;
@@ -84,7 +84,6 @@ void DoorTwoSecondLock::Update()
 	{
 		return;
 	}
-
 
 	if (state_two == DoorTwoSecondLockStateOpening && state != DoorStateLocked)
 	{
@@ -121,6 +120,11 @@ DoorState DoorTwoSecondLock::GetState()
 		state_two == DoorTwoSecondLockStateLocking)
 	{
 		return DoorStateClosing;
+	}
+
+	if (state == DoorStateLocked)
+	{
+		return DoorStateClosed;
 	}
 
 	return state;

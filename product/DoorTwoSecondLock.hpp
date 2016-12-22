@@ -23,6 +23,7 @@ class DoorTwoSecondLock : public Door
 private:
 	DoorTwoSecondLockState state_two;
 	DoorLockState state_lock;
+
 	Timer update_timer;
 	Timer lock_timer;
 
