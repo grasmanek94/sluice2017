@@ -15,12 +15,6 @@
     <ClCompile Include="product\Door.cpp">
       <Filter>product</Filter>
     </ClCompile>
-    <ClCompile Include="product\NormalDoor.cpp">
-      <Filter>product</Filter>
-    </ClCompile>
-    <ClCompile Include="product\OneSecondMotorDoor.cpp">
-      <Filter>product</Filter>
-    </ClCompile>
     <ClCompile Include="product\Sluice.cpp">
       <Filter>product</Filter>
     </ClCompile>
@@ -28,9 +22,6 @@
       <Filter>product</Filter>
     </ClCompile>
     <ClCompile Include="product\TrafficLight.cpp">
-      <Filter>product</Filter>
-    </ClCompile>
-    <ClCompile Include="product\TwoSecondLockingDoor.cpp">
       <Filter>product</Filter>
     </ClCompile>
     <ClCompile Include="product\SluiceNetworkHandler.cpp">
@@ -42,15 +33,21 @@
     <ClCompile Include="product\DoorLock.cpp">
       <Filter>product</Filter>
     </ClCompile>
+    <ClCompile Include="product\DoorEngineOneSecond.cpp">
+      <Filter>product</Filter>
+    </ClCompile>
+    <ClCompile Include="product\DoorLockTwoSecond.cpp">
+      <Filter>product</Filter>
+    </ClCompile>
+    <ClCompile Include="product\DoorOneSecondMotor.cpp">
+      <Filter>product</Filter>
+    </ClCompile>
+    <ClCompile Include="product\DoorTwoSecondLock.cpp">
+      <Filter>product</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="product\Door.hpp">
-      <Filter>product</Filter>
-    </ClInclude>
-    <ClInclude Include="product\NormalDoor.hpp">
-      <Filter>product</Filter>
-    </ClInclude>
-    <ClInclude Include="product\OneSecondMotorDoor.hpp">
       <Filter>product</Filter>
     </ClInclude>
     <ClInclude Include="product\Sluice.hpp">
@@ -60,9 +57,6 @@
       <Filter>product</Filter>
     </ClInclude>
     <ClInclude Include="product\TrafficLight.hpp">
-      <Filter>product</Filter>
-    </ClInclude>
-    <ClInclude Include="product\TwoSecondLockingDoor.hpp">
       <Filter>product</Filter>
     </ClInclude>
     <ClInclude Include="product\Valve.hpp">
@@ -75,6 +69,18 @@
       <Filter>product</Filter>
     </ClInclude>
     <ClInclude Include="product\DoorEngine.hpp">
+      <Filter>product</Filter>
+    </ClInclude>
+    <ClInclude Include="product\DoorEngineOneSecond.hpp">
+      <Filter>product</Filter>
+    </ClInclude>
+    <ClInclude Include="product\DoorLockTwoSecond.hpp">
+      <Filter>product</Filter>
+    </ClInclude>
+    <ClInclude Include="product\DoorOneSecondMotor.hpp">
+      <Filter>product</Filter>
+    </ClInclude>
+    <ClInclude Include="product\DoorTwoSecondLock.hpp">
       <Filter>product</Filter>
     </ClInclude>
   </ItemGroup>
