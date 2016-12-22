@@ -37,12 +37,12 @@ bool SluiceLogic::Schutten()
 
 	if (level == WaterLevelHigh)
 	{
-		schutten_to_close = sluice->DoorHigh();
+		schutten_to_close = sluice->DoorLow();
 		state_schutten = SluiceLogicStateSchuttenInternalLowerClosing;
 	}
 	else if (level == WaterLevelLow)
 	{
-		schutten_to_close = sluice->DoorLow();
+		schutten_to_close = sluice->DoorHigh();
 		state_schutten = SluiceLogicStateSchuttenInternalHigherClosing;
 	}
 	else
@@ -161,6 +161,11 @@ void SluiceLogic::Update()
 		break;
 	}
 	sluice->Update();
+}
+
+SluiceLogicState SluiceLogic::GetState()
+{
+	return state_current;
 }
 
 

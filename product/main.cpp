@@ -69,52 +69,27 @@ int main(int argc, char *argv[])
 		mvprintw(2, 1, "A - ALARM");
 		mvprintw(3, 1, "E - SCHUTTEN");
 		mvprintw(4, 1, "Y - VRIJGEVEN INVAREN");
-		mvprintw(4, 1, "U - VRIJGEVEN UITVAREN");
-		mvprintw(5, 1, "O - HERSTELLEN");
-		mvprintw(6, 1, "M - AFSLUITEN");
+		mvprintw(5, 1, "U - VRIJGEVEN UITVAREN");
+		mvprintw(6, 1, "O - HERSTELLEN");
+		mvprintw(7, 1, "M - AFSLUITEN");
 		
 		mvprintw(9, 1,  "CONNECTION:    OK");
-		mvprintw(10, 1,  "SLUICE NUMBER: %d", sluice_number);
+		mvprintw(10, 1, "SLUICE NUMBER: %d", sluice_number);
 		mvprintw(11, 1, "PORT:          %d", port);
-		mvprintw(13, 1, "SLUICE STATUS: NONE");
 
-		mvprintw(0, 32,		"+ PROPERTY ----------------- LastKnownValue +");
-		for (int i = 1; i <= 29; ++i)
+		mvprintw(13, 1, "SLUICE STATUS: ");
+		switch (sluice.GetState())
 		{
-			mvprintw(i, 32, "|                                           |");
+		case SluiceLogicStateIdle:
+			mvprintw(13, 17, "IDLE");
+			break;
+		case SluiceLogicStateSchutten:
+			mvprintw(13, 17, "SCHUTTEN");
+			break;
+		case SluiceLogicStateAlarm:
+			mvprintw(13, 17, "ALARM");
+			break;
 		}
-		mvprintw(30, 32,	"+-------------------------------------------+");
-
-		mvprintw(1, 33,		 " WATER LEVEL                  low");
-		mvprintw(2, 33,		 " DOORS");
-		mvprintw(3, 33,		 "     +----LEFT                doorLocked");
-		mvprintw(4, 33,		 "     |    |");
-		mvprintw(5, 33,		 "     |    +----VALVES");
-		mvprintw(6, 33,		 "     |    |    +----HIGH      closed");
-		mvprintw(7, 33,		 "     |    |    +----MID       closed");
-		mvprintw(8, 33,		 "     |    |    +----LOW       closed");
-		mvprintw(9, 33,		 "     |    |");
-		mvprintw(10, 33,	 "     |    +----TRAFFIC LIGHTS");
-		mvprintw(11, 33,	 "     |    |    |");
-		mvprintw(12, 33,	 "     |    |    +----INSIDE    off");
-		mvprintw(13, 33,	 "     |    |    +----OUTSIDE   off");
-		mvprintw(14, 33,	 "     |    |");
-		mvprintw(15, 33,	 "     |    +----LOCK STATE     lockWorking");
-		mvprintw(16, 33,	 "     |");
-		mvprintw(17, 33,	 "     +----RIGHT               doorLocked");
-		mvprintw(18, 33,	 "          |");
-		mvprintw(19, 33,	 "          +----VALVES");
-		mvprintw(20, 33,	 "          |    +----HIGH      closed");
-		mvprintw(21, 33,	 "          |    +----MID       closed");
-		mvprintw(22, 33,	 "          |    +----LOW       closed");
-		mvprintw(23, 33,	 "          |");
-		mvprintw(24, 33,	 "          +----TRAFFIC LIGHTS");
-		mvprintw(25, 33,	 "          |    |");
-		mvprintw(26, 33,	 "          |    +----INSIDE    off");
-		mvprintw(27, 33,	 "          |    +----OUTSIDE   off");
-		mvprintw(28, 33,	 "          |");
-		mvprintw(29, 33,	 "          +----LOCK STATE     lockWorking");
-
 
 		switch (getch())
 		{

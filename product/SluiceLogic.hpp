@@ -45,4 +45,6 @@ public:
 	bool Alarm();
 	bool Herstel();
 	void Update();
+
+	SluiceLogicState GetState();
 };
