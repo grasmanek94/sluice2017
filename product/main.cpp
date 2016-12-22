@@ -29,21 +29,6 @@ int CreateTCPClientSocket(const char * servIP, unsigned short port)
 	return (sock);
 }
 
-void x()
-{
-	/*send(sock, echoString, echoStringLen, 0);
-	bytesRcvd = recv(sock, echoBuffer, RCVBUFSIZE - 1, 0);
-	if (bytesRcvd > 0)
-	{
-		echoBuffer[bytesRcvd < RCVBUFSIZE - 1 ? bytesRcvd : RCVBUFSIZE - 1] = 0;
-		printf("%s\n", echoBuffer);
-	}
-	else
-	{
-
-	}*/
-}
-
 int main(int argc, char *argv[])
 {
 	int port = argc >= 2 ? std::atol(argv[1]) : 0;
@@ -84,14 +69,15 @@ int main(int argc, char *argv[])
 		mvprintw(0, 1, "%d-%d-%d %d:%d:%d", 1900 + now->tm_year, 1 + now->tm_mon, now->tm_mday, now->tm_hour, now->tm_min, now->tm_sec);
 		mvprintw(2, 1, "A - ALARM");
 		mvprintw(3, 1, "E - SCHUTTEN");
-		mvprintw(4, 1, "U - VRIJGEVEN");
+		mvprintw(4, 1, "Y - VRIJGEVEN INVAREN");
+		mvprintw(4, 1, "U - VRIJGEVEN UITVAREN");
 		mvprintw(5, 1, "O - HERSTELLEN");
 		mvprintw(6, 1, "M - AFSLUITEN");
 		
-		mvprintw(8, 1,  "CONNECTION:    OK");
-		mvprintw(9, 1,  "SLUICE NUMBER: %d", sluice_number);
-		mvprintw(10, 1, "PORT:          %d", port);
-		mvprintw(12, 1, "SLUICE STATUS: NONE");
+		mvprintw(9, 1,  "CONNECTION:    OK");
+		mvprintw(10, 1,  "SLUICE NUMBER: %d", sluice_number);
+		mvprintw(11, 1, "PORT:          %d", port);
+		mvprintw(13, 1, "SLUICE STATUS: NONE");
 
 		mvprintw(0, 32,		"+ PROPERTY ----------------- LastKnownValue +");
 		for (int i = 1; i <= 29; ++i)
@@ -133,7 +119,12 @@ int main(int argc, char *argv[])
 
 		switch (getch())
 		{
-			// Vrijgeven
+			// Vrijgeven in
+		case 'y':
+		case 'Y':
+			break;
+
+			// Vrijgeven uit
 		case 'u':
 		case 'U':
 			break;
@@ -163,7 +154,7 @@ int main(int argc, char *argv[])
 		}
 
 		refresh();
-		std::this_thread::sleep_for(std::chrono::milliseconds(5));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 
 	/*  Clean up after ourselves  */

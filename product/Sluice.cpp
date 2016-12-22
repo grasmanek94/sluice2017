@@ -1,5 +1,10 @@
 #include "Sluice.hpp"
 
+// 8) De sluisdeuren worden bediend met een hydraulische installatie.
+// Deze installatie mag alleen bekrachtigd worden om de deuren te openen 
+// als het water aan beide zijden van de deur op gelijk niveau is.
+// Er is een detectie die aanspreekt als het waterniveau aan beide zijden 
+// van de deur gelijk is. 
 Sluice::Sluice(SluiceNetworkHandler* handler, int sluice_nummer)
 	: handler(handler), sluice_nummer(sluice_nummer)
 {
