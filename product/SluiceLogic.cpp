@@ -316,9 +316,7 @@ void SluiceLogic::UpdateSchutten()
 			
 			switch(door_state)
 			{
-			case DoorStateLocked:
 			case DoorStateMotorDamage:
-			case DoorStateUnknown:
 				exit(door_state);
 				break;
 			default:

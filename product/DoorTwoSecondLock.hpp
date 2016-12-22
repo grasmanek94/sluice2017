@@ -6,9 +6,7 @@
 enum DoorTwoSecondLockState
 {
 	DoorTwoSecondLockStateIdle,
-	DoorTwoSecondLockStateOpening,
-	DoorTwoSecondLockStateClosing,
-	DoorTwoSecondLockStateLocking
+	DoorTwoSecondLockStateClosing
 };
 
 enum DoorLockState

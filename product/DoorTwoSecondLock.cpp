@@ -36,7 +36,6 @@ bool DoorTwoSecondLock::Unlock()
 	std::string output;
 	if (!handler->ExchangeMessage("SetDoorLock" + name + ":off;", output))
 	{
-
 		return false;
 	}
 	if (!handler->AckOk(output))
@@ -44,14 +43,16 @@ bool DoorTwoSecondLock::Unlock()
 		return false;
 	}
 
-	state_two = DoorTwoSecondLockStateOpening;
-
 	return true;
 }
 
 bool DoorTwoSecondLock::Open()
 {
-	return Unlock();
+	if (Unlock())
+	{
+		return Door::Open();
+	}
+	return false;
 }
 
 bool DoorTwoSecondLock::Close()
@@ -80,48 +81,14 @@ void DoorTwoSecondLock::Update()
 		UpdateLockState();
 	}
 
-	if (state_two == DoorTwoSecondLockStateIdle)
+	if (state_two == DoorTwoSecondLockStateClosing && state == DoorStateClosed)
 	{
-		return;
-	}
-
-	if (state_two == DoorTwoSecondLockStateOpening && state != DoorStateLocked)
-	{
-		if (Door::Open())
-		{
-			state_two = DoorTwoSecondLockStateIdle;
-		}
-	}
-
-	if (state == DoorStateClosed)
-	{
-		if (state_two == DoorTwoSecondLockStateClosing)
-		{
-			lock_timer.Restart();
-			state_two = DoorTwoSecondLockStateLocking;
-		}
-		else if(state_two == DoorTwoSecondLockStateLocking && lock_timer.ElapsedMilliseconds() > 250)
-		{
-			if (Lock())
-			{
-				state_two = DoorTwoSecondLockStateIdle;
-			}
-		}
+		Lock();
 	}
 }
 
 DoorState DoorTwoSecondLock::GetState()
 {
-	if (state_two == DoorTwoSecondLockStateOpening)
-	{
-		return DoorStateOpening;
-	}
-	else if (state_two == DoorTwoSecondLockStateClosing ||
-		state_two == DoorTwoSecondLockStateLocking)
-	{
-		return DoorStateClosing;
-	}
-
 	if (state == DoorStateLocked)
 	{
 		return DoorStateClosed;
