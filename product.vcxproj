@@ -20,10 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="product\Door.cpp" />
-    <ClCompile Include="product\DoorEngine.cpp" />
-    <ClCompile Include="product\DoorEngineOneSecond.cpp" />
-    <ClCompile Include="product\DoorLock.cpp" />
-    <ClCompile Include="product\DoorLockTwoSecond.cpp" />
     <ClCompile Include="product\main.cpp" />
     <ClCompile Include="product\DoorOneSecondMotor.cpp" />
     <ClCompile Include="product\Sluice.cpp" />
@@ -36,10 +32,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="product\Door.hpp" />
-    <ClInclude Include="product\DoorEngine.hpp" />
-    <ClInclude Include="product\DoorEngineOneSecond.hpp" />
-    <ClInclude Include="product\DoorLock.hpp" />
-    <ClInclude Include="product\DoorLockTwoSecond.hpp" />
     <ClInclude Include="product\DoorOneSecondMotor.hpp" />
     <ClInclude Include="product\Sluice.hpp" />
     <ClInclude Include="product\SluiceLogic.hpp" />

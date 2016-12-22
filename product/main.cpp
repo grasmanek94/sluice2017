@@ -3,31 +3,7 @@
 #include <string>
 #include <ncurses.h>
 #include <thread>
-#include <memory.h>     // for memset()
-#include <arpa/inet.h>  /* for sockaddr_in and inet_ntoa() */
-
-int CreateTCPClientSocket(const char * servIP, unsigned short port)
-{
-	int                 sock;
-	struct sockaddr_in  ServAddr;
-
-	if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
-	{
-		return -1;
-	}
-
-	memset(&ServAddr, 0, sizeof(ServAddr));
-	ServAddr.sin_family = AF_INET;
-	ServAddr.sin_addr.s_addr = inet_addr(servIP);
-	ServAddr.sin_port = htons(port);
-
-	if (connect(sock, (struct sockaddr *) &ServAddr, sizeof(ServAddr)) < 0)
-	{
-		return -1;
-	}
-
-	return (sock);
-}
+#include "SluiceLogic.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -55,6 +31,8 @@ int main(int argc, char *argv[])
 	keypad(mainwin, TRUE);  // enable non-printable keys in getch
 	cbreak();				// disable buffering for fast updates
 	curs_set(0);			// disable cursor
+
+	SluiceLogic sluice(sluice_number);
 
 	bool running = true;
 	while (running)
@@ -122,26 +100,31 @@ int main(int argc, char *argv[])
 			// Vrijgeven in
 		case 'y':
 		case 'Y':
+			sluice.VrijgevenInvaren();
 			break;
 
 			// Vrijgeven uit
 		case 'u':
 		case 'U':
+			sluice.VrijgevenUitvaren();
 			break;
 
 			// Herstellen
 		case 'o':
 		case 'O':
+			sluice.Herstel();
 			break;
 
 			// Schutten
 		case 'e':
 		case 'E':
+			sluice.Schutten();
 			break;
 
 			// Alarm
 		case 'a':
 		case 'A':
+			sluice.Alarm();
 			break;
 
 			// Exit

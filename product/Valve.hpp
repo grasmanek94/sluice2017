@@ -46,7 +46,7 @@ public:
 			mapper["open;"] = ValveStateOpen;
 		}
 
-		std::map<std::string, DoorState>::iterator found = mapper.find(input);
+		std::map<std::string, ValveState>::iterator found = mapper.find(input);
 		if (found == mapper.end())
 		{
 			return ValveStateUnknown;

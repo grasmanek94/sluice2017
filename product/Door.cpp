@@ -83,7 +83,7 @@ bool Door::Stop()
 
 void Door::Update()
 {
-	if (state_update.ElapsedMilliseconds() >= 75)
+	if (state_update.ElapsedMilliseconds() >= 50)
 	{
 		state_update.Restart();
 		UpdateState();

@@ -1,5 +1,18 @@
 #include "Sluice.hpp"
 
+WaterLevel Sluice::UpdateWaterLevel()
+{
+	std::string output;
+	if (!handler->ExchangeMessage("GetWaterLevel", output))
+	{
+		water_level = WaterLevelUnknown;
+	}
+	else
+	{
+		water_level = WaterLevelMapper<>::Map(output);
+	}
+}
+
 // 8) De sluisdeuren worden bediend met een hydraulische installatie.
 // Deze installatie mag alleen bekrachtigd worden om de deuren te openen 
 // als het water aan beide zijden van de deur op gelijk niveau is.
@@ -45,7 +58,7 @@ Sluice::~Sluice()
 
 WaterLevel Sluice::GetWaterLevel()
 {
-	return WaterLevel();
+	return water_level;
 }
 
 Door* Sluice::DoorLow()
@@ -60,6 +73,11 @@ Door* Sluice::DoorHigh()
 
 void Sluice::Update()
 {
+	if (water_level_timer.ElapsedMilliseconds() >= 50)
+	{
+		water_level_timer.Restart();
+		UpdateWaterLevel();
+	}
 	door_low->Update();
 	door_high->Update();
 }

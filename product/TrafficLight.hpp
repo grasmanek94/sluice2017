@@ -58,7 +58,7 @@ public:
 			mapper["off;"] = TrafficLightStateInternalOff;
 		}
 
-		std::map<std::string, DoorState>::iterator found = mapper.find(input);
+		std::map<std::string, TrafficLightStateInternal>::iterator found = mapper.find(input);
 		if (found == mapper.end())
 		{
 			return TrafficLightStateInternalUnknown;
