@@ -17,6 +17,26 @@ int main(int argc, char *argv[])
 	}
 
 	int sluice_number = port - 5554;
+	SluiceLogic sluice(sluice_number);
+
+	std::cout << "Schutten ..." << std::endl;
+	std::cout << sluice.Schutten() << std::endl;
+	std::cout << "... klaar." << std::endl;
+	return 0;
+}
+
+int old_main(int argc, char *argv[])
+{
+	int port = argc >= 2 ? std::atol(argv[1]) : 0;
+	if (argc < 2)
+	{
+		std::cout << "Invoking this program requires you to supply a valid port number in the command line!" << std::endl;
+		std::cout << "Supplied port must be in range [5555, 5558], supplied port: " << port << std::endl;
+		std::cout << "Example: " << argv[0] << " 5555" << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	int sluice_number = port - 5554;
 
 	WINDOW* mainwin = initscr();
 
