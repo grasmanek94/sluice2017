@@ -1,6 +1,6 @@
 #include "Door.hpp"
 
-Door::Door(SluiceNetworkHandler * handler, const std::string & door_name)
+Door::Door(SluiceNetworkHandler* handler, const std::string& door_name)
 	: handler(handler),
 	name(door_name),
 	state(DoorStateClosed),
