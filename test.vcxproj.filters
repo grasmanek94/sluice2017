@@ -39,6 +39,15 @@
     <ClCompile Include="product\TrafficLight.cpp">
       <Filter>product</Filter>
     </ClCompile>
+    <ClCompile Include="product\SluiceNetworkHandler.cpp">
+      <Filter>product</Filter>
+    </ClCompile>
+    <ClCompile Include="product\DoorEngine.cpp">
+      <Filter>product</Filter>
+    </ClCompile>
+    <ClCompile Include="product\DoorLock.cpp">
+      <Filter>product</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="product\Door.hpp">
@@ -63,6 +72,15 @@
       <Filter>product</Filter>
     </ClInclude>
     <ClInclude Include="product\Valve.hpp">
+      <Filter>product</Filter>
+    </ClInclude>
+    <ClInclude Include="product\SluiceNetworkHandler.hpp">
+      <Filter>product</Filter>
+    </ClInclude>
+    <ClInclude Include="product\DoorLock.hpp">
+      <Filter>product</Filter>
+    </ClInclude>
+    <ClInclude Include="product\DoorEngine.hpp">
       <Filter>product</Filter>
     </ClInclude>
   </ItemGroup>
