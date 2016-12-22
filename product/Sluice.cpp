@@ -1,1 +1,60 @@
 #include "Sluice.hpp"
+
+Sluice::Sluice(SluiceNetworkHandler* handler, int sluice_nummer)
+	: handler(handler), sluice_nummer(sluice_nummer)
+{
+	if (handler == NULL)
+	{
+		throw std::invalid_argument("handler");
+	}
+
+	switch (sluice_nummer)
+	{
+	case 1:
+	case 2:
+		door_low = new Door(handler, "Left");
+		door_high = new Door(handler, "Right");
+		break;
+	case 3:
+		door_low = new DoorTwoSecondLock(handler, "Left");
+		door_high = new DoorTwoSecondLock(handler, "Right");
+		break;
+	case 4:
+		door_low = new DoorOneSecondMotor(handler, "Left");
+		door_high = new DoorOneSecondMotor(handler, "Right");
+		break;
+	default:
+		throw std::invalid_argument("sluice_nummer");
+		break;
+	}
+}
+
+Sluice::~Sluice()
+{
+	delete door_low;
+	door_low = NULL;
+
+	delete door_high;
+	door_high = NULL;
+}
+
+WaterLevel Sluice::GetWaterLevel()
+{
+	return WaterLevel();
+}
+
+Door* Sluice::DoorLow()
+{
+	return door_low;
+}
+
+Door* Sluice::DoorHigh()
+{
+	return door_high;
+}
+
+void Sluice::Update()
+{
+	door_low->Update();
+	door_high->Update();
+}
