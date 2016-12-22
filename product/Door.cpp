@@ -90,6 +90,7 @@ void Door::Update()
 		ValveLow.UpdateState();
 		ValveMid.UpdateState();
 		ValveHigh.UpdateState();
+		// By uncommenting this we save a total of 2x2x2 (8) calls per update
 		//TrafficLightInside.UpdateState();
 		//TrafficLightOutside.UpdateState();
 	}
