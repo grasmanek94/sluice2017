@@ -75,11 +75,12 @@ bool DoorTwoSecondLock::Stop()
 void DoorTwoSecondLock::Update()
 {
 	Door::Update();
-	if (update_timer.ElapsedMilliseconds() >= 150)
+	// Aren't using it anyway so comment away for now
+	/*if (update_timer.ElapsedMilliseconds() >= 150)
 	{
 		update_timer.Restart();
 		UpdateLockState();
-	}
+	}*/
 
 	if (state_two == DoorTwoSecondLockStateClosing && state == DoorStateClosed)
 	{
