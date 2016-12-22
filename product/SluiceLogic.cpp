@@ -1,8 +1,166 @@
 #include "SluiceLogic.hpp"
 
-void SluiceLogic::UpdateIdle()
+SluiceLogic::SluiceLogic(int sluice_nummer)
+	: sluice_nummer(sluice_nummer),
+	handler(new SluiceNetworkHandler(sluice_nummer)),
+	sluice(new Sluice(handler, sluice_nummer)),
+	state_current(SluiceLogicStateIdle),
+	state_before_alarm(SluiceLogicStateIdle),
+	state_schutten(SluiceLogicStateSchuttenInternalIdle)
+{ }
+
+SluiceLogic::~SluiceLogic()
 {
+	delete sluice;
+	sluice = NULL;
+
+	delete handler;
+	handler = NULL;
 }
+
+// 1) De sluiswachter beslist of de sluis geschut wordt, 
+// hij heeft hiervoor per sluis een knop “start”.
+bool SluiceLogic::Schutten()
+{
+	if (state_current != SluiceLogicStateIdle)
+	{
+		return false;
+	}
+
+	// 2) De geopende deuren van sluis, 
+	// daar waar de waterstand aan beide zijden gelijk is, 
+	// worden dan gesloten.
+	Door* schutten_to_close = NULL;
+	WaterLevel level = sluice->GetWaterLevel();
+
+	if (level == WaterLevelHigh)
+	{
+		schutten_to_close = sluice->DoorHigh();
+		state_schutten = SluiceLogicStateSchuttenInternalLowerClosing;
+	}
+	else if (level == WaterLevelLow)
+	{
+		schutten_to_close = sluice->DoorLow();
+		state_schutten = SluiceLogicStateSchuttenInternalHigherClosing;
+	}
+	else
+	{
+		return false;
+	}
+
+	state_current = SluiceLogicStateSchutten;
+	
+	sluice->DoorHigh()->TrafficLightInside.Red();
+	sluice->DoorHigh()->TrafficLightOutside.Red();
+	sluice->DoorLow()->TrafficLightInside.Red();
+	sluice->DoorLow()->TrafficLightOutside.Red();
+
+	if (schutten_to_close->GetState() == DoorStateOpen)
+	{
+		schutten_to_close->Close();
+	}
+
+	return true;
+}
+
+// 6) Evenzo staat er aan de ingang van de 
+// sluis een verkeerslicht. Boten mogen de 
+// sluis pas invaren als de  sluiswachter de 
+// sluis hiervoor heeft vrijgegeven en de 
+// deuren helemaal geopend zijn. De sluiswachter 
+// heeft hiervoor per sluis een knop “vrijgeven voor invaren”. 
+bool SluiceLogic::VrijgevenInvaren()
+{
+	Door* open = VrijgevenDoor();
+	if (open == NULL)
+	{
+		return false;
+	}
+
+	open->TrafficLightOutside.Green();
+	return true;
+}
+
+// 5) Om beschadigingen aan de deuren te voorkomen 
+// staan bij de sluis verkeerslichten. 
+// De boten mogen pas uitvaren als dit verkeerslicht 
+// op groen staat. Dit wordt pas op groen gezet 
+// als de deuren zeker helemaal geopend zijn 
+// en de sluiswachter de sluis heeft vrijgegeven voor uitvaren. 
+bool SluiceLogic::VrijgevenUitvaren()
+{
+	Door* open = VrijgevenDoor();
+	if (open == NULL)
+	{
+		return false;
+	}
+
+	open->TrafficLightInside.Green();
+	return true;
+}
+
+// 11) In een noodsituatie, bv als er iemand in het water is gevallen, 
+// kan de sluiswachter ingrijpen door op een knop “alarm” te drukken. 
+// Zijn de deuren aan beide zijden gesloten dan worden direct (eventueel) 
+// geopende kleppen in de deuren dichtgemaakt om het zakkende of stijgende waterpeil 
+// te stabiliseren. Als deuren aan het openen of aan het sluiten zijn wordt deze 
+// beweging onmiddellijk gestopt.
+bool SluiceLogic::Alarm()
+{
+	if (state_current != SluiceLogicStateAlarm)
+	{
+		return false;
+	}
+
+	state_before_alarm = state_current;
+	state_current = SluiceLogicStateAlarm;
+
+	sluice->DoorHigh()->Stop();
+	sluice->DoorHigh()->ValveLow.Close();
+	sluice->DoorHigh()->ValveMid.Close();
+	sluice->DoorHigh()->ValveHigh.Close();
+
+	sluice->DoorLow()->Stop();
+	sluice->DoorLow()->ValveLow.Close();
+	sluice->DoorLow()->ValveMid.Close();
+	sluice->DoorLow()->ValveHigh.Close();
+
+	sluice->DoorLow()->TrafficLightInside.Red();
+	sluice->DoorLow()->TrafficLightOutside.Red();
+
+	sluice->DoorHigh()->TrafficLightInside.Red();
+	sluice->DoorHigh()->TrafficLightOutside.Red();
+
+	return true;
+}
+
+bool SluiceLogic::Herstel()
+{
+	if (state_current != SluiceLogicStateAlarm)
+	{
+		return false;
+	}
+
+	state_current = state_before_alarm;
+	return false;
+}
+
+void SluiceLogic::Update()
+{
+	switch (state_current)
+	{
+	case SluiceLogicStateIdle:
+		break;
+	case SluiceLogicStateSchutten:
+		UpdateSchutten();
+		break;
+	case SluiceLogicStateAlarm:
+		UpdateAlarm();
+		break;
+	}
+	sluice->Update();
+}
+
 
 void SluiceLogic::UpdateSchutten()
 {
@@ -161,143 +319,52 @@ void SluiceLogic::UpdateSchutten()
 	}
 }
 
-void SluiceLogic::UpdateVrijgevenInvaren()
-{
-
-}
-
-void SluiceLogic::UpdateVrijgevenUitvaren()
-{
-
-}
-
 void SluiceLogic::UpdateAlarm()
 {
+	sluice->DoorHigh()->Stop();
+	sluice->DoorHigh()->ValveLow.Close();
+	sluice->DoorHigh()->ValveMid.Close();
+	sluice->DoorHigh()->ValveHigh.Close();
 
+	sluice->DoorLow()->Stop();
+	sluice->DoorLow()->ValveLow.Close();
+	sluice->DoorLow()->ValveMid.Close();
+	sluice->DoorLow()->ValveHigh.Close();
+
+	sluice->DoorLow()->TrafficLightInside.Red();
+	sluice->DoorLow()->TrafficLightOutside.Red();
+
+	sluice->DoorHigh()->TrafficLightInside.Red();
+	sluice->DoorHigh()->TrafficLightOutside.Red();
 }
 
-void SluiceLogic::UpdateHerstel()
-{
-
-}
-
-SluiceLogic::SluiceLogic(int sluice_nummer)
-	: sluice_nummer(sluice_nummer),
-	handler(new SluiceNetworkHandler(sluice_nummer)),
-	sluice(new Sluice(handler, sluice_nummer)),
-	state_current(SluiceLogicStateIdle),
-	state_before_alarm(SluiceLogicStateIdle)
-{ }
-
-SluiceLogic::~SluiceLogic()
-{
-	delete sluice;
-	sluice = NULL;
-
-	delete handler;
-	handler = NULL;
-}
-
-// 1) De sluiswachter beslist of de sluis geschut wordt, 
-// hij heeft hiervoor per sluis een knop “start”.
-bool SluiceLogic::Schutten()
+Door* SluiceLogic::VrijgevenDoor()
 {
 	if (state_current != SluiceLogicStateIdle)
 	{
-		return false;
+		return NULL;
 	}
 
-	// 2) De geopende deuren van sluis, 
-	// daar waar de waterstand aan beide zijden gelijk is, 
-	// worden dan gesloten.
-	Door* schutten_to_close = NULL;
 	WaterLevel level = sluice->GetWaterLevel();
+	Door* open_check = NULL;
 
 	if (level == WaterLevelHigh)
 	{
-		schutten_to_close = sluice->DoorHigh();
-		state_schutten = SluiceLogicStateSchuttenInternalLowerClosing;
+		open_check = sluice->DoorHigh();
 	}
 	else if (level == WaterLevelLow)
 	{
-		schutten_to_close = sluice->DoorLow();
-		state_schutten = SluiceLogicStateSchuttenInternalHigherClosing;
+		open_check = sluice->DoorLow();
 	}
 	else
 	{
-		return false;
+		return NULL;
 	}
 
-	state_current = SluiceLogicStateSchutten;
-	
-	if (schutten_to_close->GetState() == DoorStateOpen)
+	if (open_check->GetState() != DoorStateOpen)
 	{
-		schutten_to_close->Close();
+		return NULL;
 	}
 
-	return true;
-}
-
-// 6) Evenzo staat er aan de ingang van de 
-// sluis een verkeerslicht. Boten mogen de 
-// sluis pas invaren als de  sluiswachter de 
-// sluis hiervoor heeft vrijgegeven en de 
-// deuren helemaal geopend zijn. De sluiswachter 
-// heeft hiervoor per sluis een knop “vrijgeven voor invaren”. 
-bool SluiceLogic::VrijgevenInvaren()
-{
-	return false;
-}
-
-// 5) Om beschadigingen aan de deuren te voorkomen 
-// staan bij de sluis verkeerslichten. 
-// De boten mogen pas uitvaren als dit verkeerslicht 
-// op groen staat. Dit wordt pas op groen gezet 
-// als de deuren zeker helemaal geopend zijn 
-// en de sluiswachter de sluis heeft vrijgegeven voor uitvaren. 
-bool SluiceLogic::VrijgevenUitvaren()
-{
-	return false;
-}
-
-// 11) In een noodsituatie, bv als er iemand in het water is gevallen, 
-// kan de sluiswachter ingrijpen door op een knop “alarm” te drukken. 
-// Zijn de deuren aan beide zijden gesloten dan worden direct (eventueel) 
-// geopende kleppen in de deuren dichtgemaakt om het zakkende of stijgende waterpeil 
-// te stabiliseren. Als deuren aan het openen of aan het sluiten zijn wordt deze 
-// beweging onmiddellijk gestopt.
-bool SluiceLogic::Alarm()
-{
-	return false;
-}
-
-bool SluiceLogic::Herstel()
-{
-	return false;
-}
-
-void SluiceLogic::Update()
-{
-	switch (state_current)
-	{
-	case SluiceLogicStateIdle:
-		UpdateIdle();
-		break;
-	case SluiceLogicStateSchutten:
-		UpdateSchutten();
-		break;
-	case SluiceLogicStateVrijgevenInvaren:
-		UpdateVrijgevenInvaren();
-		break;
-	case SluiceLogicStateVrijgevenUitvaren:
-		UpdateVrijgevenUitvaren();
-		break;
-	case SluiceLogicStateAlarm:
-		UpdateAlarm();
-		break;
-	case SluiceLogicStateHerstel:
-		UpdateHerstel();
-		break;
-	}
-	sluice->Update();
+	return open_check;
 }

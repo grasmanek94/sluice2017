@@ -6,10 +6,7 @@ enum SluiceLogicState
 {
 	SluiceLogicStateIdle,
 	SluiceLogicStateSchutten,
-	SluiceLogicStateVrijgevenInvaren,
-	SluiceLogicStateVrijgevenUitvaren,
-	SluiceLogicStateAlarm,
-	SluiceLogicStateHerstel
+	SluiceLogicStateAlarm
 };
 
 enum SluiceLogicStateSchuttenInternal
@@ -32,18 +29,12 @@ private:
 	Sluice* sluice;
 	SluiceLogicState state_current;
 	SluiceLogicState state_before_alarm;
-
-	void UpdateIdle();
-
-	void UpdateSchutten();
 	SluiceLogicStateSchuttenInternal state_schutten;
 
-	void UpdateVrijgevenInvaren();
-	void UpdateVrijgevenUitvaren();
+	void UpdateSchutten();
 	void UpdateAlarm();
-	void UpdateHerstel();
+	Door* VrijgevenDoor();
 
-	
 public:
 	SluiceLogic(int sluice_nummer);
 	~SluiceLogic();
