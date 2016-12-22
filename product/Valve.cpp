@@ -7,17 +7,35 @@ Valve::Valve(SluiceNetworkHandler* handler, const std::string& door_name, ValveP
 
 bool Valve::Open()
 {
-	return false;
+	std::string output;
+	if (!handler->ExchangeMessage("SetDoor" + door_name + "Valve" + std::to_string((int)position) + ":open;", output))
+	{
+		return false;
+	}
+	if (!handler->AckOk(output))
+	{
+		return false;
+	}
+	return true;
 }
 
 bool Valve::Close()
 {
-	return false;
+	std::string output;
+	if (!handler->ExchangeMessage("SetDoor" + door_name + "Valve" + std::to_string((int)position) + ":close;", output))
+	{
+		return false;
+	}
+	if (!handler->AckOk(output))
+	{
+		return false;
+	}
+	return true;
 }
 
 ValveState Valve::GetState() const
 {
-	return ValveState();
+	return state;
 }
 
 ValveState Valve::UpdateState()
