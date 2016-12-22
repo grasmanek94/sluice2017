@@ -71,7 +71,7 @@ void DoorTwoSecondLock::Update()
 		return;
 	}
 
-	if (lock_timer.ElapsedMilliseconds() >= 500)
+	if (lock_timer.ElapsedMilliseconds() >= 250)
 	{
 		if (state_two == DoorTwoSecondLockStateOpening && Door::Open())
 		{
@@ -86,7 +86,7 @@ void DoorTwoSecondLock::Update()
 			lock_timer.Restart();
 			state_two = DoorTwoSecondLockStateLocking;
 		}
-		else if(state_two == DoorTwoSecondLockStateLocking && lock_timer.ElapsedMilliseconds() > 500)
+		else if(state_two == DoorTwoSecondLockStateLocking && lock_timer.ElapsedMilliseconds() > 250)
 		{
 			if (Lock())
 			{

@@ -7,7 +7,7 @@ DoorOneSecondMotor::DoorOneSecondMotor(SluiceNetworkHandler* handler, const std:
 bool DoorOneSecondMotor::Open()
 {
 	timer.Restart();
-	return Door::Close();
+	return Door::Open();
 }
 
 bool DoorOneSecondMotor::Close()
@@ -25,7 +25,7 @@ void DoorOneSecondMotor::Update()
 {
 	Door::Update();
 
-	if ((state == DoorStateOpening || state == DoorStateClosing) && timer.ElapsedMilliseconds() > 500)
+	if ((state == DoorStateOpening || state == DoorStateClosing) && timer.ElapsedMilliseconds() > 450)
 	{
 		state == DoorStateOpening ?
 			Open() :
