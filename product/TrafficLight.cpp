@@ -22,7 +22,7 @@ bool TrafficLight::Off()
 {
 	std::string output;
 
-	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Red:off", output))
+	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Red:off;", output))
 	{
 		return false;
 	}
@@ -31,7 +31,7 @@ bool TrafficLight::Off()
 		return false;
 	}
 
-	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Green:off", output))
+	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Green:off;", output))
 	{
 		return false;
 	}
@@ -47,7 +47,7 @@ bool TrafficLight::Red()
 {
 	std::string output;
 
-	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Red:on", output))
+	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Red:on;", output))
 	{
 		return false;
 	}
@@ -56,7 +56,7 @@ bool TrafficLight::Red()
 		return false;
 	}
 
-	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Green:off", output))
+	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Green:off;", output))
 	{
 		return false;
 	}
@@ -72,7 +72,7 @@ bool TrafficLight::Green()
 {
 	std::string output;
 
-	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Red:off", output))
+	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Red:off;", output))
 	{
 		return false;
 	}
@@ -81,7 +81,7 @@ bool TrafficLight::Green()
 		return false;
 	}
 
-	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Green:on", output))
+	if (!handler->ExchangeMessage("SetTrafficLight" + index + "Green:on;", output))
 	{
 		return false;
 	}
@@ -102,7 +102,7 @@ TrafficLightState TrafficLight::UpdateState()
 {
 	std::string output;
 
-	if (!handler->ExchangeMessage("GetTrafficLight" + index + "Red", output))
+	if (!handler->ExchangeMessage("GetTrafficLight" + index + "Red;", output))
 	{
 		red = TrafficLightStateInternalUnknown;
 	}
@@ -111,7 +111,7 @@ TrafficLightState TrafficLight::UpdateState()
 		red = TrafficLightStateMapper<>::Map(output);
 	}
 
-	if (!handler->ExchangeMessage("GetTrafficLight" + index + "Green", output))
+	if (!handler->ExchangeMessage("GetTrafficLight" + index + "Green;", output))
 	{
 		green = TrafficLightStateInternalUnknown;
 	}

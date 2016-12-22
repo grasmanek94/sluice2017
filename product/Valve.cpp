@@ -22,7 +22,7 @@ ValveState Valve::GetState() const
 ValveState Valve::UpdateState()
 {
 	std::string output;
-	if (!handler->ExchangeMessage("GetDoor" + door_name + "Valve" + std::to_string((int)position), output))
+	if (!handler->ExchangeMessage("GetDoor" + door_name + "Valve" + std::to_string((int)position) + ";", output))
 	{
 		state = ValveStateUnknown;
 	}

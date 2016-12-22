@@ -23,7 +23,7 @@ Door::~Door()
 DoorState Door::UpdateState()
 {
 	std::string output;
-	if (!handler->ExchangeMessage("GetDoor" + name, output))
+	if (!handler->ExchangeMessage("GetDoor" + name + ";", output))
 	{
 		state = DoorStateUnknown;
 	}
@@ -42,7 +42,7 @@ DoorState Door::GetState()
 bool Door::Open()
 {
 	std::string output;
-	if (!handler->ExchangeMessage("SetDoor" + name + ":open", output))
+	if (!handler->ExchangeMessage("SetDoor" + name + ":open;", output))
 	{
 		return false;
 	}
@@ -56,7 +56,7 @@ bool Door::Open()
 bool Door::Close()
 {
 	std::string output;
-	if (!handler->ExchangeMessage("SetDoor" + name + ":close", output))
+	if (!handler->ExchangeMessage("SetDoor" + name + ":close;", output))
 	{
 		return false;
 	}
@@ -70,7 +70,7 @@ bool Door::Close()
 bool Door::Stop()
 {
 	std::string output;
-	if (!handler->ExchangeMessage("SetDoor" + name + ":stop", output))
+	if (!handler->ExchangeMessage("SetDoor" + name + ":stop;", output))
 	{
 		return false;
 	}

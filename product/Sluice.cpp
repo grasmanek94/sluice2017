@@ -3,7 +3,7 @@
 WaterLevel Sluice::UpdateWaterLevel()
 {
 	std::string output;
-	if (!handler->ExchangeMessage("GetWaterLevel", output))
+	if (!handler->ExchangeMessage("GetWaterLevel;", output))
 	{
 		water_level = WaterLevelUnknown;
 	}
