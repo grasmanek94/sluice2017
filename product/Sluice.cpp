@@ -11,6 +11,8 @@ WaterLevel Sluice::UpdateWaterLevel()
 	{
 		water_level = WaterLevelMapper<>::Map(output);
 	}
+
+	return water_level;
 }
 
 // 8) De sluisdeuren worden bediend met een hydraulische installatie.

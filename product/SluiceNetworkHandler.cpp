@@ -1,5 +1,6 @@
 #include <memory.h>     // for memset()
 #include <arpa/inet.h>  /* for sockaddr_in and inet_ntoa() */
+#include <stdexcept>
 #include "SluiceNetworkHandler.hpp"
 
 int SluiceNetworkHandler::CreateTCPClientSocket(const char * servIP, unsigned short port)
@@ -38,7 +39,7 @@ SluiceNetworkHandler::SluiceNetworkHandler(int sluis_nummer)
 
 bool SluiceNetworkHandler::ExchangeMessage(const std::string& input, std::string& output)
 {
-	if (send(socket_fd, input.c_str(), input.size(), 0) != input.size())
+	if (send(socket_fd, input.c_str(), input.size(), 0) != (int)input.size())
 	{
 		return false;
 	}

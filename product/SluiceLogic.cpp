@@ -275,6 +275,7 @@ void SluiceLogic::UpdateSchutten()
 
 				case WaterLevelAboveValve3:
 				case WaterLevelHigh:
+				case WaterLevelUnknown:
 					break;
 				}
 			}
@@ -315,6 +316,9 @@ void SluiceLogic::UpdateSchutten()
 			state_current = SluiceLogicStateIdle;
 			// and then exit
 		}
+		break;
+
+		case SluiceLogicStateSchuttenInternalIdle:
 		break;
 	}
 }
