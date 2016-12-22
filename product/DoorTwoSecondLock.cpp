@@ -71,9 +71,10 @@ void DoorTwoSecondLock::Update()
 		return;
 	}
 
-	if (lock_timer.ElapsedMilliseconds() >= 250)
+
+	if (state_two == DoorTwoSecondLockStateOpening && state != DoorStateLocked)
 	{
-		if (state_two == DoorTwoSecondLockStateOpening && Door::Open())
+		if (Door::Open())
 		{
 			state_two = DoorTwoSecondLockStateIdle;
 		}
