@@ -8,8 +8,8 @@ private:
 	Timer timer;
 public:
 	DoorOneSecondMotor(SluiceNetworkHandler* handler, const std::string& door_name);
-	virtual bool Open();
-	virtual bool Close();
-	virtual bool Stop();
-	virtual void Update();
+	virtual bool Open() override;
+	virtual bool Close() override;
+	virtual bool Stop() override;
+	virtual void Update() override;
 };

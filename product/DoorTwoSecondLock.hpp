@@ -29,14 +29,13 @@ private:
 	bool Lock();
 	bool Unlock();
 	
-
 public:
 	DoorTwoSecondLock(SluiceNetworkHandler* handler, const std::string& door_name);
-	virtual bool Open();
-	virtual bool Close();
-	virtual bool Stop();
-	virtual void Update();
-	virtual DoorState GetState();
+	virtual bool Open() override;
+	virtual bool Close() override;
+	virtual bool Stop() override;
+	virtual void Update() override;
+	virtual DoorState GetState() override;
 	DoorLockState GetLockState();
 	DoorLockState UpdateLockState();
 };
