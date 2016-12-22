@@ -163,18 +163,22 @@ void SluiceLogic::UpdateSchutten()
 
 void SluiceLogic::UpdateVrijgevenInvaren()
 {
+
 }
 
 void SluiceLogic::UpdateVrijgevenUitvaren()
 {
+
 }
 
 void SluiceLogic::UpdateAlarm()
 {
+
 }
 
 void SluiceLogic::UpdateHerstel()
 {
+
 }
 
 SluiceLogic::SluiceLogic(int sluice_nummer)
