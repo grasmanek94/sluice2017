@@ -1,0 +1,1 @@
+De SluiceLogic naar SluiceNetworkHandler pijl moet gevuld zijn (composition) ipv een aggregation, source kwijt dus heb alleen pdf
