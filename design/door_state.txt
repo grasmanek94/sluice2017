@@ -1,0 +1,15 @@
+@startuml
+[*] -right-> Locked
+Locked -right-> Closed : Unlock
+Closed -down-> Opening : Open\n[Unlocked Within 2 Seconds] / 
+Closed -right-> LockDamaged : Open\n[Not Unlocked Within 2 Seconds] / 
+Opening -left-> Open : Open Complete
+Open -up-> Closing : Close
+Closing -up-> Closed : Close Complete\n
+Closed -left-> Locked : Lock\n[Locked Within 2 Seconds]
+Closed -> LockDamaged : Lock\n[Not Locked Within 2 Seconds]
+Opening -> Opening : Update\n[One Second Passed] / Turn Motor On with Open
+Opening -down-> MotorDamaged : Update\n[Motor Not Turned On in 1 Second]
+Closing -> Closing : Update\n[One Second Passed] / Turn Motor On with Close
+Closing -down-> MotorDamaged : Update\n[Motor Not Turned On in 1 Second]
+@enduml

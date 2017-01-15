@@ -1,0 +1,49 @@
+@startuml
+[*] -right-> Idle
+Idle -down-> Schutten : Schutten Button Pressed\n[state is Idle] / Close Doors
+Idle -down-> Alarm : Alarm Button Pressed\n / Secure The Sluice
+Alarm -down-> Idle : Herstel Button Pressed\n[previous state is Idle]
+Schutten -left-> Alarm : Alarm Button Pressed\n / Secure The Sluice
+Alarm -down-> Schutten : Herstel Button Pressed\n[previous state is Schutten]
+Idle -down-> Idle : Vrijgeven\n / Update Lights
+Idle -down-> [*] : Button M Pressed
+Alarm -down-> [*] : Button M Pressed
+Schutten -down-> [*] : Button M Pressed
+
+note right of Schutten
+  Indien hertsteld vanaf Alarm state, 
+  zal Schutten verder gaan vanaf de laatste state.
+end note
+
+state Schutten {
+  [*] -down-> Closing
+
+  Closing -down-> Lower : Doors Closed\n[water state is high]
+  Closing -right-> Higher : Doors Closed\n[water state is low]
+
+  Lower -left-> Lower : Water Level Update\n[water level above low] / Update Valves
+  Lower -down-> Opening : Water Level Update\n[water level is low] / Close all Valves & Open Doors
+  
+  Higher -down-> Opening : Water Level Update\n[water level is high] / Close all Valves & Open Doors
+
+  Opening --> [*] : Doors Open
+
+  state Higher {
+    [*] --> ValvesUpdating
+    ValvesUpdating -> ValvesUpdating : Update\n[Water is low] / Open Low Valve
+    note left of ValvesUpdating
+      Hier moet ook nog
+      Update
+      [Water is below mid] / Open Low and Mid Valves
+       
+      en
+       
+      Update
+      [Water is below high] / Open All Valves
+       
+      bij (kan niet door programma limitaties)
+    end note
+    ValvesUpdating -down-> [*] : Update\n[Water is high]
+  }
+}
+@enduml
