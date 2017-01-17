@@ -1,35 +1,25 @@
 @startuml
 skinparam style strictuml
-
-  [-> SluiceLogic : Schutten
+  [-> SluiceLogic : Vrijgeven (in en uitvaren)
   activate SluiceLogic
-      SluiceLogic -> Sluice : Door Lights Red
-      activate Sluice
-      Sluice -> Door : Turn Lights Red
-      activate Door
-      loop for each Light  
-        Door -> TrafficLight : Red
-        activate TrafficLight
-        TrafficLight -> SluiceNetworkHandler : ExchangeMessage
-        activate SluiceNetworkHandler
-        TrafficLight <- SluiceNetworkHandler :
-        deactivate SluiceNetworkHandler
-        Door <- TrafficLight
-        deactivate TrafficLight   
-      end
-      Sluice <- Door
-      alt Door == Open
-        Sluice -> Door : Close 
-        Door -> SluiceNetworkHandler : ExchangeMessage
-        activate SluiceNetworkHandler
-        Door <- SluiceNetworkHandler :
-        deactivate SluiceNetworkHandler
-        Sluice <- Door
-      end
-      deactivate Door
-      SluiceLogic <- Sluice
-      SluiceLogic --> SluiceLogic : SetStateSchutten
-      deactivate Sluice
+  SluiceLogic -> Sluice : GetWaterLevel
+  activate Sluice
+  SluiceLogic <- Sluice
+  SluiceLogic -> Sluice : Door Light Green
+  Sluice -> Door : Set Green Light
+  activate Door
+  Door -> TrafficLight : Green
+  activate TrafficLight
+  TrafficLight -> SluiceNetworkHandler : ExchangeMessage
+  activate SluiceNetworkHandler
+  TrafficLight <- SluiceNetworkHandler :
+  deactivate SluiceNetworkHandler
+  Door <- TrafficLight
+  deactivate TrafficLight
+  Sluice <- Door
+  deactivate Door
+  Sluice <- SluiceLogic
+  deactivate Sluice
   [<-- SluiceLogic
   deactivate SluiceLogic
 @enduml

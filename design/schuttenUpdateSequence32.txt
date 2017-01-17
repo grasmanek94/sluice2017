@@ -1,12 +1,30 @@
 @startuml
 skinparam style strictuml
-
-  [-> SluiceLogic : Schutten
+  [-> SluiceLogic : Herstel
   activate SluiceLogic
-      SluiceLogic -> Sluice : Door Lights Red
+  SluiceLogic --> SluiceLogic : SetAlarmState
+      SluiceLogic -> Sluice : Door
       activate Sluice
-      Sluice -> Door : Turn Lights Red
+      Sluice -> Door : Stop
       activate Door
+      Door -> SluiceNetworkHandler : ExchangeMessage
+      activate SluiceNetworkHandler
+      Door <- SluiceNetworkHandler :
+      deactivate SluiceNetworkHandler
+      Sluice <- Door
+      Sluice -> Door : Close Valves
+      loop for each Valve  
+        Door -> Valve : Close
+        activate Valve
+        Valve -> SluiceNetworkHandler : ExchangeMessage
+        activate SluiceNetworkHandler
+        Valve <- SluiceNetworkHandler :
+        deactivate SluiceNetworkHandler
+        Door <- Valve
+        deactivate Valve   
+      end
+      Sluice <- Door
+      Sluice -> Door : Turn Lights Red
       loop for each Light  
         Door -> TrafficLight : Red
         activate TrafficLight
@@ -18,17 +36,8 @@ skinparam style strictuml
         deactivate TrafficLight   
       end
       Sluice <- Door
-      alt Door == Open
-        Sluice -> Door : Close 
-        Door -> SluiceNetworkHandler : ExchangeMessage
-        activate SluiceNetworkHandler
-        Door <- SluiceNetworkHandler :
-        deactivate SluiceNetworkHandler
-        Sluice <- Door
-      end
       deactivate Door
-      SluiceLogic <- Sluice
-      SluiceLogic --> SluiceLogic : SetStateSchutten
+      SluiceLogic <-- Sluice
       deactivate Sluice
   [<-- SluiceLogic
   deactivate SluiceLogic

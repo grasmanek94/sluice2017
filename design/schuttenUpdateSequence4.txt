@@ -1,0 +1,160 @@
+@startuml
+skinparam style strictuml
+  [-> SluiceLogic : UpdateSchutten
+  activate SluiceLogic
+    alt Closing
+      SluiceLogic -> Sluice : Close Door
+      activate Sluice
+      Sluice -> Door : Close
+      activate Door
+      Door -> SluiceNetworkHandler : ExchangeMessage
+      activate SluiceNetworkHandler
+      Door <- SluiceNetworkHandler :
+      deactivate SluiceNetworkHandler
+      Sluice <- Door
+      deactivate Door
+      SluiceLogic <- Sluice
+      deactivate Sluice
+      alt GoHigher
+        SluiceLogic --> SluiceLogic : SetHigherState
+      else GoLower
+        SluiceLogic --> SluiceLogic : SetLowerState
+      end
+    else Lower water
+      SluiceLogic -> Sluice : Open Lowest Valve
+      activate Sluice
+      Sluice -> Door : Open Lowest Valve
+      activate Door
+      Door -> Valve : Open
+      activate Valve
+      Valve -> SluiceNetworkHandler : ExchangeMessage
+      activate SluiceNetworkHandler
+      Valve <- SluiceNetworkHandler :
+      deactivate SluiceNetworkHandler
+      Door <- Valve
+      deactivate Valve
+      Sluice <- Door
+      deactivate Door
+      SluiceLogic <- Sluice
+      deactivate Sluice
+      ... water is high ...
+      SluiceLogic -> Sluice : GetWaterLevel
+      activate Sluice
+      SluiceLogic <- Sluice
+      deactivate Sluice
+      ... water is low ...
+      SluiceLogic -> Sluice : Close Lowest Valve
+      activate Sluice
+      Sluice -> Door : Close Lowest Valve
+      activate Door
+      Door -> Valve : Close
+      activate Valve
+      Valve -> SluiceNetworkHandler : ExchangeMessage
+      activate SluiceNetworkHandler
+      Valve <- SluiceNetworkHandler :
+      deactivate SluiceNetworkHandler
+      Door <- Valve
+      deactivate Valve
+      Sluice <- Door
+      deactivate Door
+      SluiceLogic <- Sluice
+      deactivate Sluice
+      SluiceLogic --> SluiceLogic : SetOpeningState
+    else Higher water
+      SluiceLogic -> Sluice : GetWaterLevel
+      activate Sluice
+      SluiceLogic <- Sluice
+      deactivate Sluice
+      alt Water is Low
+        SluiceLogic -> Sluice : Open Lowest Valve
+        activate Sluice
+        Sluice -> Door : Open Lowest Valve
+        activate Door
+        Door -> Valve : Open
+        activate Valve
+        Valve -> SluiceNetworkHandler : ExchangeMessage
+        activate SluiceNetworkHandler
+        Valve <- SluiceNetworkHandler :
+        deactivate SluiceNetworkHandler
+        Door <- Valve
+        deactivate Valve
+        Sluice <- Door
+        deactivate Door
+        SluiceLogic <- Sluice
+        deactivate Sluice
+      else Water is AlmostMid
+        SluiceLogic -> SluiceLogic : Do WaterIsLow ^
+        SluiceLogic -> Sluice : Open Mid Valve
+        activate Sluice
+        Sluice -> Door : Open Mid Valve
+        activate Door
+        Door -> Valve : Open
+        activate Valve
+        Valve -> SluiceNetworkHandler : ExchangeMessage
+        activate SluiceNetworkHandler
+        Valve <- SluiceNetworkHandler :
+        deactivate SluiceNetworkHandler
+        Door <- Valve
+        deactivate Valve
+        Sluice <- Door
+        deactivate Door
+        SluiceLogic <- Sluice
+        deactivate Sluice
+      else Water is AlmostHigh
+        SluiceLogic -> SluiceLogic : Do WaterIsAlmostMid ^
+        SluiceLogic -> Sluice : Open High Valve
+        activate Sluice
+        Sluice -> Door : Open High Valve
+        activate Door
+        Door -> Valve : Open
+        activate Valve
+        Valve -> SluiceNetworkHandler : ExchangeMessage
+        activate SluiceNetworkHandler
+        Valve <- SluiceNetworkHandler :
+        deactivate SluiceNetworkHandler
+        Door <- Valve
+        deactivate Valve
+        Sluice <- Door
+        deactivate Door
+        SluiceLogic <- Sluice
+        deactivate Sluice
+      else Water is High
+        SluiceLogic -> Sluice : Close all Valves
+        activate Sluice
+        Sluice -> Door : Close all Valves
+        loop For each Valve
+          activate Door
+          Door -> Valve : Close
+          activate Valve
+          Valve -> SluiceNetworkHandler : ExchangeMessage
+          activate SluiceNetworkHandler
+          Valve <- SluiceNetworkHandler :
+          deactivate SluiceNetworkHandler
+          Door <- Valve
+          deactivate Valve
+        end
+        Sluice <- Door
+        deactivate Door
+        SluiceLogic <- Sluice
+        deactivate Sluice
+      end
+
+      SluiceLogic --> SluiceLogic : SetOpeningState
+    else Opening
+      SluiceLogic -> Sluice : Open Door
+      activate Sluice
+      Sluice -> Door : Open
+      activate Door
+      Door -> SluiceNetworkHandler : ExchangeMessage
+      activate SluiceNetworkHandler
+      Door <- SluiceNetworkHandler :
+      deactivate SluiceNetworkHandler
+      Sluice <- Door
+      deactivate Door
+      SluiceLogic <- Sluice
+      deactivate Sluice
+      SluiceLogic --> SluiceLogic : SetIdleState
+    end 
+  [<-- SluiceLogic
+  deactivate SluiceLogic
+@enduml
