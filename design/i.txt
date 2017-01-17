@@ -1,0 +1,118 @@
+@startuml
+skinparam style strictuml
+
+
+  [-> mainloop : run
+  activate mainloop
+  
+  mainloop -> SluiceLogic : Update
+  activate SluiceLogic
+
+  alt State == Schutten
+    SluiceLogic --> SluiceLogic : UpdateSchutten
+  else State == Alarm 
+    SluiceLogic --> SluiceLogic : UpdateAlarm
+    activate SluiceLogic
+    SluiceLogic -> Timer : ElapsedMilliseconds
+    activate Timer
+    SluiceLogic <- Timer :
+    deactivate Timer
+    alt ElapsedMilliseconds >= 150
+      SluiceLogic -> Sluice : Door
+      activate Sluice
+      Sluice -> Door : Stop
+      activate Door
+      Door -> SluiceNetworkHandler : ExchangeMessage
+      activate SluiceNetworkHandler
+      Door <- SluiceNetworkHandler :
+      deactivate SluiceNetworkHandler
+      Sluice <- Door
+      Sluice -> Door : Close Valves
+      loop for each Valve  
+        Door -> Valve : Close
+        activate Valve
+        Valve -> SluiceNetworkHandler : ExchangeMessage
+        activate SluiceNetworkHandler
+        Valve <- SluiceNetworkHandler :
+        deactivate SluiceNetworkHandler
+        Door <- Valve
+        deactivate Valve   
+      end
+      Sluice <- Door
+      Sluice -> Door : Turn Lights Red
+      loop for each Light  
+        Door -> TrafficLight : Red
+        activate TrafficLight
+        TrafficLight -> SluiceNetworkHandler : ExchangeMessage
+        activate SluiceNetworkHandler
+        TrafficLight <- SluiceNetworkHandler :
+        deactivate SluiceNetworkHandler
+        Door <- TrafficLight
+        deactivate TrafficLight   
+      end
+      Sluice <- Door
+      deactivate Door
+      SluiceLogic <-- Sluice
+      deactivate SluiceLogic
+      deactivate Sluice
+    end 
+  end
+
+  SluiceLogic -> Sluice : Update
+  activate Sluice
+
+  Sluice -> Timer : ElapsedMilliseconds
+  activate Timer
+  Sluice <- Timer :
+  deactivate Timer
+ 
+  alt ElapsedMilliseconds >= 150
+    Sluice --> Sluice : UpdateWaterLevel
+    activate Sluice
+    Sluice -> SluiceNetworkHandler : ExchangeMessage
+    activate SluiceNetworkHandler
+    Sluice <- SluiceNetworkHandler :
+    deactivate SluiceNetworkHandler
+    deactivate Sluice
+  end
+
+  Sluice -> Door : Update
+  activate Door
+  
+  Door -> Timer : ElapsedMilliseconds
+  activate Timer
+  Door <- Timer
+  deactivate Timer
+  
+  alt ElapsedMilliseconds >= 150
+    Door --> Door : UpdateState
+    activate Door
+    Door -> SluiceNetworkHandler : ExchangeMessage
+    activate SluiceNetworkHandler
+    Door <- SluiceNetworkHandler :
+    deactivate SluiceNetworkHandler
+    deactivate Door
+
+    loop for each Valve  
+      Door -> Valve : UpdateState
+      activate Valve
+      Valve -> SluiceNetworkHandler : ExchangeMessage
+      activate SluiceNetworkHandler  
+      Valve <- SluiceNetworkHandler :
+      deactivate SluiceNetworkHandler  
+      Door <-- Valve
+      deactivate Valve  
+    end
+  end
+ 
+  Sluice <-- Door
+  deactivate Door
+  
+  SluiceLogic <-- Sluice
+   deactivate Sluice
+
+  mainloop <-- SluiceLogic
+  deactivate SluiceLogic
+  [<-- mainloop : run done
+  deactivate mainloop
+@enduml

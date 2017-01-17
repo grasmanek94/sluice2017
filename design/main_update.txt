@@ -1,0 +1,64 @@
+@startuml
+skinparam style strictuml
+
+
+  [-> mainloop : run
+  activate mainloop
+  
+  mainloop -> SluiceLogic : Update
+  activate SluiceLogic
+
+  alt State == Schutten
+    SluiceLogic --> SluiceLogic : UpdateSchutten
+  else State == Alarm 
+    SluiceLogic --> SluiceLogic : UpdateAlarm
+  end
+
+  SluiceLogic -> Sluice : Update
+  activate Sluice
+
+  Sluice -> Timer : ElapsedMilliseconds
+  activate Timer
+  Sluice <- Timer :
+  deactivate Timer
+ 
+  Sluice --> Sluice : UpdateWaterLevel / [ElapsedMilliseconds >= 150]
+  Sluice -> SluiceNetworkHandler : ExchangeMessage 
+  activate SluiceNetworkHandler
+  Sluice <- SluiceNetworkHandler :
+  deactivate SluiceNetworkHandler
+
+  Sluice -> Door : Update
+  activate Door
+  
+  Door -> Timer : ElapsedMilliseconds
+  activate Timer
+  Door <- Timer
+  deactivate Timer
+  
+  Door --> Door : UpdateState
+  Door -> SluiceNetworkHandler : ExchangeMessage
+  activate SluiceNetworkHandler
+  Door <- SluiceNetworkHandler :
+  deactivate SluiceNetworkHandler
+
+  loop for each Valve  
+    Door -> Valve : UpdateState
+    activate Valve
+    Valve -> SluiceNetworkHandler : ExchangeMessage
+    activate SluiceNetworkHandler  
+    Valve <- SluiceNetworkHandler :
+    deactivate Valve  
+    deactivate SluiceNetworkHandler  
+  end
+ 
+  Sluice <-- Door
+  deactivate Door
+  deactivate Sluice
+  SluiceLogic <-- Sluice
+ 
+  mainloop <-- SluiceLogic
+  deactivate SluiceLogic
+  [<-- mainloop : run done
+  deactivate mainloop
+@enduml
